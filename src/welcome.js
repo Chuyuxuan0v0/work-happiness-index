@@ -40,16 +40,18 @@ const Welcome = () => {
     const fenzi = (avgincome / workDay) * place * pepole * colleague;
     const fenmu = 35 * (workTimes + goHomeTime - (0.5 * relaxTime)) * degree
     setResults(fenzi / fenmu)
-    console.log(`结果${fenzi / fenmu},
-                  workTimes${workTimes}
-                  workDay${workDay}
-                  place${place}
-                  colleague${colleague}
-                  pepole${pepole}
-                  avgincome${avgincome},
-                  goHomeTime${goHomeTime},
-                  degree${degree},
-                  relaxTime${relaxTime}`)
+    const values = fenzi / fenmu
+    if (values < 0.8) {
+      alert('不太行，建议换工作!')
+    }
+    if (0.8 <= values && values < 1.5) {
+      alert('一般般，继续努力奋斗吧，打工人!')
+    } if (1.5 <= values && values < 2) {
+      alert('不错哦，是个好工作!')
+    }
+    if (2 <= values) {
+      alert('羡慕呀，师傅，你是做什么工作的？分享一下！')
+    }
   }
 
   const options = {
@@ -83,8 +85,14 @@ const Welcome = () => {
 
   }
 
+  window.onload = function () {
+    alert('仅供娱乐，不要当真！'
+    )
+  }
   return (
     <>
+      <p>声明，仅供娱乐。根据得分情况，查看工作评价</p>
+
       <Form
         className='formss'
         name="basic"
@@ -92,48 +100,40 @@ const Welcome = () => {
         <Form.Item
           label="您的月薪"
         >
-          <Input type="number" suffix="元" value={avgincome} onChange={(e) => {setAvgincome(e.target.value)}} />
-          <span>一个月工资卡到账多少 </span>
+          <Input type="number" suffix="元" value={avgincome} onChange={(e) => { setAvgincome(e.target.value) }} />
+          <span className="spans">一个月（30天）工资卡到账多少 </span>
         </Form.Item>
         <Form.Item
           label="工作天数"
         >
           <Input type="number" suffix="天" value={workDay} onChange={(e) => setWorkDay(e.target.value)} />
-          <span> 平均一个月工作多少天</span>
+          <span className="spans"> 平均一个月(30天)工作多少天</span>
         </Form.Item>
 
         <Form.Item
           label="上班时间"
         >
           <Input type="number" suffix="小时" placeholder="8.00" value={workTimes} onChange={(e) => setWorkTimes(e.target.value)} />
-          <span>即下班时间点-上班时间点，单位为小时，可包含小数点后两位 </span>
+          <span className="spans">即下班时间点-上班时间点，单位为小时，可包含小数点后两位 </span>
         </Form.Item>
 
         <Form.Item
           label="通勤时间"
         >
           <Input type="number" suffix="小时" value={goHomeTime} onChange={(e) => setGoHomeTime(e.target.value)} placeholder="1.00" />
-          <span>即包含上、下班的交通时间，单位为小时，可包含小数点后两位 </span>
+          <span className="spans">即包含上、下班的交通时间，单位为小时，可包含小数点后两位 </span>
         </Form.Item>
         <Form.Item
           label="休息时间"
         >
           <Input type="number" suffix="小时" placeholder="1.00" value={relaxTime} onChange={(e) => setRelaxTime(e.target.value)} />
-          <span>即包含摸鱼滑水，吃法时间，单位为小时，可包含小数点后两位 </span>
+          <span className="spans">即包含摸鱼滑水，吃法时间，单位为小时，可包含小数点后两位 </span>
         </Form.Item>
 
 
         <Form.Item
           label="环境系数"
         >
-          {/* <Select key='a' defaultValue="1" onChange={() => handleChange()}>
-          <Option value="0.8">偏远地/山区、通勤困难郊区、偏远地区工地等户外艰苦工作环境</Option>
-          <Option value="1">市区，通勤较为方便，有自己的工位等普通室内工作环境</Option>
-          <Option value="0.9" > 室外、工地、工厂等非偏远，通勤较为方便工作环境</Option>
-          <Option value="1.1" >体制内工作（国企、教师、等事业单位非偏远、交通通勤方便等工作）</Option>
-          <Option value="1.1" >CBD 工作</Option>
-        </Select> */}
-
           <Select defaultValue={`市区，通勤较为方便，有自己的工位等普通室内工作环境${place}`} onChange={(value) => handleChange(value, `place`)}>
             {
               options.place.map((item, index) => (
@@ -142,7 +142,7 @@ const Welcome = () => {
             }
           </Select>
           <br></br>
-          <span> 您现在工作所处的环境，根据实际情况选择即可 </span>
+          <span className="spans"> 您现在工作所处的环境，根据实际情况选择即可 </span>
         </Form.Item>
         <Form.Item
           label="同事系数"
@@ -155,7 +155,7 @@ const Welcome = () => {
             }
           </Select>
 
-          <span> 您现在工作所处的环境，根据实际情况选择即可 </span>
+          <span className="spans"> 您现在工作所处的环境，根据实际情况选择即可 </span>
         </Form.Item>
 
         <Form.Item
@@ -169,7 +169,7 @@ const Welcome = () => {
             }
           </Select>
 
-          <span> 您现在工作所处的环境，根据实际情况选择即可 </span>
+          <span className="spans"> 您现在工作所处的环境，根据实际情况选择即可 </span>
         </Form.Item>
 
         <Form.Item
@@ -183,15 +183,12 @@ const Welcome = () => {
             }
           </Select>
 
-          <span> 您现在拥有的最高学历，包含自考函授等，选取对应的即可 </span>
+          <span className="spans"> 您现在拥有的最高学历，包含自考函授等，选取对应的即可 </span>
         </Form.Item>
 
 
         <Form.Item
-          wrapperCol={{
-            offset: 10,
-            span: 24,
-          }}
+
         >
           <Button type="primary" htmlType="submit" onClick={() => handleResult()}>
             提交
@@ -199,7 +196,15 @@ const Welcome = () => {
         </Form.Item>
       </Form>
       <br></br>
-      <h1>你的计算结果为 {results.toFixed(2)}! </h1>
+      <div className='contens'>
+        <p>根据数据分析，目前您的工作幸福程度得分为<font style={{ "color": "red", "fontSize": "30px" }}>{results.toFixed(2)}</font> </p>
+
+        <br></br>
+        <br></br>
+        <br></br>
+
+      </div>
+
     </>
   )
 
